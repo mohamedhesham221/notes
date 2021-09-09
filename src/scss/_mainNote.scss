@@ -1,0 +1,156 @@
+%fontFamily {
+    font-family: $font;
+    font-weight: 600;
+} 
+.note {
+    width: 100%;
+    min-height: 100vh;
+    background-color: $bgBody;
+    padding: 0 20px 50px;
+    .logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 40px;
+    }
+    .form {
+        width: 100%;
+        height: max-content;
+        background-color: $bgNote;
+        color: $txtColor;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: $font;
+        position: relative;
+        .thumbtack {
+            display: block;
+            width: fit-content;
+            height: fit-content;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            opacity: .4;
+            cursor: pointer;
+        }
+        .isPinned { 
+            opacity: 1 !important;
+        }
+        label {
+            display: block;
+            margin: 10px auto 5px;
+            font-weight: 600;
+        }
+        label[for=image], label[for=link] {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .title, .content, .link, .input-interface {
+            outline: none;
+            border: none;
+            background-color: transparent;
+            color: $txtColor;
+            @extend %fontFamily;
+            &::placeholder {
+                @extend %fontFamily;
+            }
+        }
+        .title, .content {
+            padding-left: 20px;
+        }
+        .content {
+            width: 100%;
+        }
+        label[for=image] {
+            .svg-inline--fa {
+                font-size: 1.5rem;
+            }
+            .img-src {
+                display: inline-block;
+                width: 220px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: $iconColor;
+                font-size: .9rem;
+                margin-left: 10px;
+            cursor: pointer;
+            }
+            }
+        input[type=file] {
+            display: none;
+        }
+        .submit {
+            margin: 20px auto 0;
+            display: block;
+            width: 100px;
+            height: auto;
+            @extend %fontFamily;
+            cursor: pointer;
+        }
+    }
+
+    .notes {
+        width: 100%;
+        height: max-content;
+        margin-top: 50px;
+        font-family: $font;
+        .note-head {
+            border-left: 3px solid $iconColor;
+            color: $txtColor;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            width: fit-content;
+            padding-left: 5px;
+        }
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;    
+            .notes-item {
+                width: 100%;
+                min-height: 300;
+                background-color: $bgNote;
+                color: $txtColor;
+                padding: 30px 20px 5px;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                position: relative;
+                .note-title {
+                    margin-left: 8px;
+                    font-size: 1rem;
+                }
+                .note-content {
+                    font-size: calc(1rem + 5px);
+                }
+                a {
+                    color: $txtColor;
+                    margin: 10px 0;
+                }
+                img {
+                    width: 100%;
+                    height: auto;
+                }
+                .icons {
+                    position: absolute;
+                    right: 5px;
+                    top: 5px;
+                        path {
+                            opacity: .5;
+                            margin: 5px;
+                            cursor: pointer;
+                        }
+                        .isPinned path { 
+                            opacity: 1 !important;
+                        }                
+                        .fa-trash-alt {
+                            display: inline-block !important;
+                            margin-left: 8px;
+                            path {
+                                opacity: 1;
+                            }
+                        }
+                    }
+            }
+    
+        }
+    }
+}

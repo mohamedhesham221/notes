@@ -1,0 +1,12 @@
+@media only screen and (min-width: 768px) {
+    .note .form {
+        width: 400px;
+    }
+    .notes-container {
+        justify-content: start !important;    
+    .notes-item {
+        width: 300px !important;
+        margin: 10px;
+    }
+}
+}
