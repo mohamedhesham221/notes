@@ -12,7 +12,7 @@
           <textarea placeholder="Note's content . . ." class="content" cols="15" rows="5"
           v-model="content"></textarea>
         <label for="link"><font-awesome-icon :icon="['fas', 'link']"/></label>
-          <input type="text" class="link" v-model="link" placeholder="http://">
+          <input type="text" class="link" v-model="link" placeholder="example:http://www.google.com">
             <br>
         <label for="image"><font-awesome-icon :icon="['fas', 'file-image']"/>
         <span class="img-src">{{ !img? "no image chosen": img }}</span>
@@ -28,6 +28,9 @@
                 <div class="notes-container">
           <div class="notes-item" v-for="(note, index) in notes.filter((x) => x.pinnedNote)"
             :key="index">
+            <div class="expand" @click="setEvt(); openData(note)">
+              <font-awesome-icon :icon="['fas', 'expand']"/>
+            </div>
                 <div class="icons">
                   <span :class="{isPinned : note.pinnedNote}">
                 <font-awesome-icon :icon="['fas', 'thumbtack']"
@@ -37,7 +40,7 @@
                       @click="notes.splice(index, 1); saveNotes();"/>
               </div>
             <p class="note-title">{{ note.titleNote }}</p>
-            <p class="note-content">{{ note.contentNote }}</p>
+            <p class="note-content">{{ note.contentNote | minChars | removeN }}</p>
             <a :href="note.linkNote" target="_blank">{{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
           </div>
@@ -46,16 +49,21 @@
         <p class="note-head" v-if="notes.length > 0">Others</p>
         <div class="notes-container">
           <div class="notes-item" v-for="(note, index) in notes.filter((x) => !x.pinnedNote)"
-              :key="index">
+              :key="index" >
+              <div class="expand" @click="setEvt(); openData(note)">
+                <font-awesome-icon :icon="['fas', 'expand']"/>
+              </div>
               <div class="icons">
                 <font-awesome-icon :icon="['fas', 'thumbtack']"
                     @click="note.pinnedNote = !note.pinnedNote; saveNotes();"/>
                 <font-awesome-icon :icon="['fas', 'trash-alt']"
                     @click="notes.splice(index, 1); saveNotes();"/>
               </div>
-            <p class="note-title">{{ note.titleNote }}</p>
-            <p class="note-content">{{ note.contentNote }}</p>
-            <a :href="note.linkNote" target="_blank">{{ note.linkNote }}</a>
+            <p class="note-title" v-if="note.titleNote.length > 0">{{ note.titleNote }}</p>
+            <p class="note-content" v-if="note.contentNote.length > 0">
+                {{ note.contentNote | minChars | removeN }}</p>
+            <a :href="note.linkNote" target="_blank" v-if="note.linkNote.length > 0">
+                {{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
           </div>
         </div>
@@ -64,6 +72,7 @@
 </template>
 
 <script>
+import Bus from '../main';
 
 export default {
   name: 'note',
@@ -76,6 +85,8 @@ export default {
       pinned: false,
       notes: [],
       showForm: false,
+      showDetails: false,
+      details: '',
     };
   },
   methods: {
@@ -94,6 +105,8 @@ export default {
         // read file as url(base65 format)
         reader.readAsDataURL(input.files[0]);
       }
+      // reset evt.target value to make on change handler do it again
+      input.value = '';
     },
     addNote() {
       this.notes.push({
@@ -119,9 +132,27 @@ export default {
     saveNotes() {
       localStorage.setItem('notes', JSON.stringify(this.notes));
     },
+    setEvt() {
+      this.showDetails = true;
+      Bus.$emit('show-details', this.showDetails);
+    },
+    openData(data) {
+      this.details = data;
+      Bus.$emit('details', this.details);
+    },
   },
   created() {
     this.notes = JSON.parse(localStorage.getItem('notes') || '[]');
+    // eslint-disable-next-line no-return-assign
+    Bus.$on('show-details', (el) => this.showDetails = el);
+  },
+  filters: {
+    MinChars(el) {
+      return `${el.substring(0, 100)} . . . . .`;
+    },
+    removeN(el) {
+      return el.replace('/\n/g', ' ');
+    },
   },
 };
 </script>

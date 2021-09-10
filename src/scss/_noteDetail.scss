@@ -1,0 +1,55 @@
+.note-detail {
+    width: 100%;
+    height: 100%;
+    background-color: $bgNoteDetail;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 80px 20px 20px;
+    display: none;
+    overflow: auto;
+    .details {
+        width: 100%;
+        min-height: 400px;
+        padding: 50px 20px ;
+        background-color: $bgNote;
+        border-radius: 10px;
+        font-family: $font;
+        color: $txtColor;
+        position: relative;
+        .title {
+            margin-left: 20px;
+        }
+        .content {
+            word-break: break-all;
+            margin: 20px 0;
+            line-height: 1.5;
+            font-size: calc(1rem + 3px);
+            white-space: pre-line;
+        }
+        .link {
+            display: block;
+            color: $txtColor;
+            margin: 15px 0;
+        }
+        .img {
+            max-width: 100%;
+            display: block;
+            margin: 30px auto 0;
+        }
+        button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-family: $font;
+            font-weight: 600;
+            width: 50px;
+            height: 25px;        
+        }
+    }
+}
+.isVisible {
+    display: block !important;
+}
