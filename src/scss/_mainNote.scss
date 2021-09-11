@@ -114,7 +114,7 @@
                 min-height: 300;
                 background-color: $bgNote;
                 color: $txtColor;
-                padding: 30px 20px 5px;
+                padding: 30px 20px 20px;
                 border-radius: 5px;
                 margin-bottom: 10px;
                 position: relative;
@@ -131,15 +131,18 @@
                     padding: 5px;
                     border-radius: 5px;
                     white-space: pre-line;
+                    display: none;
                 }
                 a {
                     display: block;
                     color: $txtColor;
                     margin: 15px 0;
+                    display: none;
                 }
                 img {
                     width: 100%;
                     height: auto;
+                    display: none;
                 }
                 .expand {
                     position: absolute;
