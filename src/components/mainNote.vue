@@ -26,7 +26,8 @@
       <div class="notes">
         <p class="note-head" v-if="notes.length > 0">Pinned</p>
                 <div class="notes-container">
-          <div class="notes-item" v-for="(note, index) in notes.filter((x) => x.pinnedNote)"
+          <div class="notes-item"
+            v-for="(note, index) in notes.filter((x) => x.pinnedNote)"
             :key="index">
             <div class="expand" @click="setEvt(); openData(note)">
               <font-awesome-icon :icon="['fas', 'expand']"/>
@@ -37,18 +38,20 @@
                       @click="note.pinnedNote = !note.pinnedNote; saveNotes();"/>
                   </span>
                 <font-awesome-icon :icon="['fas', 'trash-alt']"
-                      @click="notes.splice(index, 1); saveNotes();"/>
+                      @click="note.deletedNote = true; removeElement(); saveNotes();"/>
               </div>
             <p class="note-title">{{ note.titleNote }}</p>
             <p class="note-content">{{ note.contentNote | minChars | removeN }}</p>
             <a :href="note.linkNote" target="_blank">{{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
+            <b>{{note.findIndex = index}}</b>
           </div>
         </div>
 
         <p class="note-head" v-if="notes.length > 0">Others</p>
         <div class="notes-container">
-          <div class="notes-item" v-for="(note, index) in notes.filter((x) => !x.pinnedNote)"
+          <div class="notes-item"
+              v-for="(note, index) in notes.filter((x) => !x.pinnedNote)"
               :key="index" >
               <div class="expand" @click="setEvt(); openData(note)">
                 <font-awesome-icon :icon="['fas', 'expand']"/>
@@ -57,7 +60,7 @@
                 <font-awesome-icon :icon="['fas', 'thumbtack']"
                     @click="note.pinnedNote = !note.pinnedNote; saveNotes();"/>
                 <font-awesome-icon :icon="['fas', 'trash-alt']"
-                    @click="notes.splice(index, 1); saveNotes();"/>
+                    @click="note.deletedNote = true; removeElement(); saveNotes();"/>
               </div>
             <p class="note-title" v-if="note.titleNote.length > 0">{{ note.titleNote }}</p>
             <p class="note-content" v-if="note.contentNote.length > 0">
@@ -65,6 +68,7 @@
             <a :href="note.linkNote" target="_blank" v-if="note.linkNote.length > 0">
                 {{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
+            <b>{{note.findIndex = index}}</b>
           </div>
         </div>
       </div>
@@ -105,7 +109,7 @@ export default {
         // read file as url(base65 format)
         reader.readAsDataURL(input.files[0]);
       }
-      // reset evt.target value to make on change handler do it again
+      // reset evt.target value to make on change event handler do it again
       input.value = '';
     },
     addNote() {
@@ -115,6 +119,8 @@ export default {
         linkNote: this.link,
         imgNote: this.img,
         pinnedNote: this.pinned,
+        deletedNote: false,
+        findIndex: 0,
       });
       this.resetInputs();
       this.saveNotes();
@@ -139,6 +145,9 @@ export default {
     openData(data) {
       this.details = data;
       Bus.$emit('details', this.details);
+    },
+    removeElement() {
+      this.notes = this.notes.filter((e) => !e.deletedNote);
     },
   },
   created() {
