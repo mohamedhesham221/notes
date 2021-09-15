@@ -44,7 +44,6 @@
             <p class="note-content">{{ note.contentNote | minChars | removeN }}</p>
             <a :href="note.linkNote" target="_blank">{{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
-            <b>{{note.findIndex = index}}</b>
           </div>
         </div>
 
@@ -68,7 +67,6 @@
             <a :href="note.linkNote" target="_blank" v-if="note.linkNote.length > 0">
                 {{ note.linkNote }}</a>
             <img v-if="note.imgNote.length > 0" :src="note.imgNote" alt="image" />
-            <b>{{note.findIndex = index}}</b>
           </div>
         </div>
       </div>
@@ -120,7 +118,6 @@ export default {
         imgNote: this.img,
         pinnedNote: this.pinned,
         deletedNote: false,
-        findIndex: 0,
       });
       this.resetInputs();
       this.saveNotes();
